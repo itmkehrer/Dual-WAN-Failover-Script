@@ -8,5 +8,12 @@ Most of the other Scripts are just removing the second route, but i want to reac
 
 To run that script you need to install the paket "ifmetric".
 
-This is for example my network
+This is for example my network:
 ![image](https://user-images.githubusercontent.com/10454554/123535376-c7bfe000-d723-11eb-8e9a-e65efa00d02d.png)
+
+
+Routes at Failover Script Server:
+
+![image](https://user-images.githubusercontent.com/10454554/123535583-099d5600-d725-11eb-9318-3d9f423a235e.png)
+
+
