@@ -26,8 +26,6 @@ checkLatency () {
 			#echo "too long, switch to backup"
 			Current_Gateway=$Gateway_Interface_Backup
 			ifmetric $Gateway_Interface_Backup 100
-		else
-			#echo "too long, but already running on backup"
 		fi
 	else
 		if [ "$Current_Gateway" = "$Gateway_Interface_Backup" ]
