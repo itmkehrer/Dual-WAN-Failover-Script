@@ -1,7 +1,7 @@
 # Dual WAN Failover Script Linux
 
-This script pings every 15 seconds Google DNS over the main WAN. 
-If the minimal latency is over 500ms, it changes the route metric, so the traffic goes over WAN2.
+This script pings every 10 seconds Google DNS over the main WAN and if this fails it ping Cloudflare DNS. 
+If the minimal latency is over 300ms, it changes the route metric, so the traffic goes over WAN2.
 When the main WAN latency recovers back to under 500ms, it changes the route metric back.
 
 Most of the other Scripts are just removing the second route, but I want to reach the second network at any time.
