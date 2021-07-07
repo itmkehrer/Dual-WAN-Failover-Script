@@ -51,9 +51,26 @@ checkLatency () {
 		echo "$Test_Latency_ms ms on $1 at $(date +"%Y-%m-%d %X")"
 		if [ "$Current_Gateway" = "$Gateway_Interface_Primary" ]
 		then
-			echo "too long, switch to backup at $(date +"%Y-%m-%d %X")"
-			Current_Gateway=$Gateway_Interface_Backup
-			/usr/sbin/ifmetric $Gateway_Interface_Backup 100
+			Test_Latency2=$(ping -c 3 -I "$1" $PING_TARGET2) 
+			Test_Latency_ms2=$(echo "$Test_Latency2" | awk -F '/' 'END {print $4}' | awk -F '=' 'END {print $2}') # minimal ms
+			if [ -z "${Test_Latency_ms2%\.*}" ]
+			then
+				echo "ping2 failed at $(date +"%Y-%m-%d %X")"
+				echo "$Test_Latency2"
+				
+				echo "switch to backup at $(date +"%Y-%m-%d %X")"
+				Current_Gateway=$Gateway_Interface_Backup
+				/usr/sbin/ifmetric $Gateway_Interface_Backup 100
+			else
+				if [ "$PING_MAX_Latency" -lt "${Test_Latency_ms2%\.*}" ]
+				then
+					echo "ping2 too long - $Test_Latency_ms2 -switch to backup at $(date +"%Y-%m-%d %X")"
+					Current_Gateway=$Gateway_Interface_Backup
+					/usr/sbin/ifmetric $Gateway_Interface_Backup 100
+				else
+					echo "ping2 is ok - $Test_Latency_ms2 - at $(date +"%Y-%m-%d %X")"
+				fi
+			fi
 		fi
 	else
 		if [ "$Current_Gateway" = "$Gateway_Interface_Backup" ]
@@ -71,3 +88,4 @@ do
 	checkLatency $Gateway_Interface_Primary
 	sleep 15
 done
+
